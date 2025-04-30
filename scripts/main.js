@@ -2,6 +2,39 @@ const inputDay = document.getElementById('day');
 const inputMonth = document.getElementById('month');
 const inputYear = document.getElementById('year');
 
+function calculate(event) {
+    
+    if (!(checkDay(inputDay) && checkMonth(inputMonth) && checkYear(inputYear))) return;
+    
+    const birthday = `${inputYear.value}-${inputMonth.value}-${inputDay.value}`;
+    const result = calculateAge(birthday);
+    
+    document.getElementById('resultDays').innerText = result.days;
+    document.getElementById('resultMonths').innerText = result.months;
+    document.getElementById('resultYears').innerText = result.years;
+    
+    event.preventDefault();
+}
+
+function calculateAge(birthday) {
+    let years = new Date().getFullYear() - new Date(birthday).getFullYear();
+    let months = new Date().getMonth() - new Date(birthday).getMonth();
+    let days = new Date().getDate() - Number(inputDay.value);
+
+    if (months < 0) {
+        //years--;
+        //years = years - 1;
+        years -= 1;
+        months += 12;
+    }
+
+    if (days < 0) {
+        days += monthTotalDays(inputYear.value, inputMonth.value - 1);
+    }
+
+    return { days, months, years };
+}
+
 function check(event) {
     const input = event.target;
     const date = input.id;
@@ -63,6 +96,7 @@ function checkYear(input) {
 }
 
 function monthTotalDays(year, month) {
+    new Date()
     return new Date(year, month, 0).getDate();
 }
 
